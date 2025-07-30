@@ -1,33 +1,7 @@
 import { Elysia } from "elysia";
 import { ip } from "elysia-ip";
-import { LogLayer } from "loglayer";
-import { pino } from "pino";
-import { PinoTransport } from "@loglayer/transport-pino";
-import {
-  getSimplePrettyTerminal,
-  moonlight,
-} from "@loglayer/transport-simple-pretty-terminal";
 
-import { config } from "./config";
-
-const pinoLogger = pino({
-  level: config.NODE_ENV === "development" ? "debug" : "info",
-});
-
-export const logger = new LogLayer({
-  transport: [
-    new PinoTransport({
-      logger: pinoLogger,
-      enabled: config.NODE_ENV === "production",
-    }),
-    getSimplePrettyTerminal({
-      enabled: config.NODE_ENV === "development",
-      viewMode: "expanded",
-      runtime: "node",
-      theme: moonlight,
-    }),
-  ],
-});
+import { getLogger } from ".";
 
 export const loggerMiddleware = () => {
   return new Elysia({
@@ -35,7 +9,7 @@ export const loggerMiddleware = () => {
   })
     .use(ip())
     .derive({ as: "global" }, ({ request, ip }) => {
-      const loggerWithContext = logger.withContext({
+      const loggerWithContext = getLogger().withContext({
         reqId: crypto.randomUUID(),
         method: request.method,
         path: request.url,
@@ -53,11 +27,15 @@ export const loggerMiddleware = () => {
     })
     .onAfterHandle({ as: "global" }, ({ logger, startTime }) => {
       const duration = process.hrtime.bigint() - startTime;
-      logger.info(`Request completed in ${timeInMs(duration)}`);
+      logger
+        .withContext({
+          duration,
+        })
+        .info(`Request completed in ${humanizeDuration(duration)}`);
     });
 };
 
-function timeInMs(duration: bigint) {
+function humanizeDuration(duration: bigint) {
   const ms = Number(duration) / 1000000;
   if (ms >= 0.1) {
     return `${ms.toFixed(1)}ms`;

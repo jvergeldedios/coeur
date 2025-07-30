@@ -1,11 +1,12 @@
 import Elysia from "elysia";
 
 import { config } from "./config";
-import { logger, loggerMiddleware } from "./logging";
+import { getLogger, loggerMiddleware } from "./logging";
 
 import { controllers } from "./controllers";
 
 export const startServer = () => {
+  const logger = getLogger();
   const app = new Elysia();
 
   app.use(loggerMiddleware());
