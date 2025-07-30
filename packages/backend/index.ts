@@ -1,3 +1,4 @@
 import { startServer } from "./src/server";
+import { config } from "./src/config";
 
-startServer();
+startServer({ port: config.PORT });
