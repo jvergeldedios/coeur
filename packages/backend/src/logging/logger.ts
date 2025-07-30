@@ -13,19 +13,26 @@ export function createLogger() {
     level: config.NODE_ENV === "development" ? "debug" : "info",
   });
 
-  return new LogLayer({
-    transport: [
-      new PinoTransport({
+  const transport = [
+    {
+      enabled: config.NODE_ENV === "production",
+      transport: new PinoTransport({
         logger: pinoLogger,
-        // enabled: config.NODE_ENV === "production",
       }),
-      // getSimplePrettyTerminal({
-      //   enabled: config.NODE_ENV === "development",
-      //   viewMode: "expanded",
-      //   runtime: "node",
-      //   theme: moonlight,
-      // }),
-    ],
+    },
+    {
+      enabled: config.NODE_ENV === "development",
+      transport: getSimplePrettyTerminal({
+        viewMode: "inline",
+        runtime: "node",
+        theme: moonlight,
+      }),
+    },
+  ]
+    .filter((t) => t.enabled)
+    .map((t) => t.transport);
+  return new LogLayer({
+    transport,
   });
 }
 

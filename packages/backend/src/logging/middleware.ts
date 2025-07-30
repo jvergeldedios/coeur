@@ -29,7 +29,7 @@ export const loggerMiddleware = () => {
       const duration = process.hrtime.bigint() - startTime;
       logger
         .withContext({
-          duration,
+          duration: Number(duration),
         })
         .info(`Request completed in ${humanizeDuration(duration)}`);
     });

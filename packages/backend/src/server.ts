@@ -20,7 +20,7 @@ export const startServer = () => {
   });
 
   app.listen(config.PORT, () => {
-    logger.info(`Coeur is beating at port ${config.PORT}`);
     logger.info(`Environment: ${config.NODE_ENV}`);
+    logger.info(`Coeur is beating at port ${config.PORT}`);
   });
 };

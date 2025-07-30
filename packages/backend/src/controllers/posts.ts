@@ -1,10 +1,11 @@
 import Elysia from "elysia";
 import { getLogger } from "../logging/logger";
+import { PostService } from "../services/post";
 
 export const postsController = new Elysia().group("/posts", (app) =>
   app
     .get("/", () => {
-      getLogger().info("List of posts");
+      PostService.getPosts();
       return "List of posts";
     })
     .get("/:id", ({ params }) => `Post ${params.id}`)
