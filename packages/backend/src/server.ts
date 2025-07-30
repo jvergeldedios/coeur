@@ -1,17 +1,25 @@
-import express, { type Response } from "express";
+import Elysia from "elysia";
 
-interface StartServerOptions {
-  port: number;
-}
+import { config } from "./config";
+import { logger, loggerMiddleware } from "./logging";
 
-export const startServer = (options: StartServerOptions = { port: 3000 }) => {
-  const app = express();
+import { controllers } from "./controllers";
 
-  app.get("/", (_, res: Response) => {
-    res.send("Hello World");
+export const startServer = () => {
+  const app = new Elysia();
+
+  app.use(loggerMiddleware());
+  app.get("/", () => "Hello World");
+
+  app.group("/api", (app) => {
+    controllers.forEach((controller) => {
+      app.use(controller);
+    });
+    return app;
   });
 
-  app.listen(options.port, () => {
-    console.log(`Server is running on port ${options.port}`);
+  app.listen(config.PORT, () => {
+    logger.info(`Coeur is beating at port ${config.PORT}`);
+    logger.info(`Environment: ${config.NODE_ENV}`);
   });
 };
