@@ -8,4 +8,11 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(3000),
 });
 
-export const config = envSchema.parse(process.env);
+const parsedEnv = envSchema.safeParse(process.env);
+
+if (!parsedEnv.success) {
+  console.error("Invalid environment variables", parsedEnv.error);
+  process.exit(1);
+}
+
+export const config = parsedEnv.data;
