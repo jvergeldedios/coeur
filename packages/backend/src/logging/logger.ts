@@ -14,23 +14,18 @@ export function createLogger() {
   });
 
   const transport = [
-    {
+    new PinoTransport({
       enabled: config.NODE_ENV === "production",
-      transport: new PinoTransport({
-        logger: pinoLogger,
-      }),
-    },
-    {
+      logger: pinoLogger,
+    }),
+    getSimplePrettyTerminal({
+      viewMode: "inline",
+      runtime: "node",
+      theme: moonlight,
       enabled: config.NODE_ENV === "development",
-      transport: getSimplePrettyTerminal({
-        viewMode: "inline",
-        runtime: "node",
-        theme: moonlight,
-      }),
-    },
-  ]
-    .filter((t) => t.enabled)
-    .map((t) => t.transport);
+    }),
+  ];
+
   return new LogLayer({
     errorSerializer: serializeError,
     transport,
