@@ -22,12 +22,18 @@ export const loggerMiddleware = createMiddleware(async (c, next) => {
   await asyncLocalStorage.run({ logger }, next);
 
   const duration = Number(process.hrtime.bigint() - start);
-  logger
-    .withContext({
-      duration,
-      status: c.res.status,
-    })
-    .info(`Request completed in ${humanizeDuration(duration)}`);
+  const loggerWithContext = logger.withContext({
+    duration,
+    status: c.res.status,
+  });
+
+  if (c.res.status >= 500) {
+    loggerWithContext.error(`Request failed in ${humanizeDuration(duration)}`);
+  } else {
+    loggerWithContext.info(
+      `Request completed in ${humanizeDuration(duration)}`
+    );
+  }
 });
 
 function humanizeDuration(duration: number) {
