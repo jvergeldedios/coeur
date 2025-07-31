@@ -13,11 +13,18 @@
   },
   "scripts": {
     "start": "bun run index.ts",
-    "dev": "bun run --watch index.ts"
+    "dev": "bun run --watch index.ts",
+    "db:drop": "bun run src/cli.ts db drop",
+    "db:create": "bun run src/cli.ts db create",
+    "db:reset": "bun run src/cli.ts db reset && bun run db:push",
+    "db:push": "bunx drizzle-kit push",
+    "db:migrate": "bunx drizzle-kit migrate",
+    "db:generate": "bunx drizzle-kit generate"
   },
   "dependencies": {
     "@loglayer/transport-pino": "^2.2.1",
     "@loglayer/transport-simple-pretty-terminal": "^2.2.1",
+    "commander": "^14.0.0",
     "dotenv": "^17.2.1",
     "drizzle-orm": "^0.44.4",
     "hono": "^4.8.10",
