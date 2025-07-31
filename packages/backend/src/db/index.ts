@@ -5,7 +5,7 @@ import type { Logger } from "drizzle-orm";
 import { config } from "../config";
 import { getLogger } from "../logging";
 
-class DBLogger implements Logger {
+class QueryLogger implements Logger {
   logQuery(query: string, params: unknown[]) {
     getLogger()
       .child()
@@ -19,5 +19,5 @@ class DBLogger implements Logger {
 
 export const db = drizzle({
   client: new SQL(config.DATABASE_URL),
-  logger: new DBLogger(),
+  logger: new QueryLogger(),
 });

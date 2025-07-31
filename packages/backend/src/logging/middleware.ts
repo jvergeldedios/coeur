@@ -1,6 +1,7 @@
 import { createMiddleware } from "hono/factory";
 import { asyncLocalStorage } from "./async-local-storage";
 import { getLogger } from ".";
+import { humanizeDuration } from "../util/time";
 
 export const loggerMiddleware = createMiddleware(async (c, next) => {
   const logger = getLogger()
@@ -35,13 +36,3 @@ export const loggerMiddleware = createMiddleware(async (c, next) => {
     );
   }
 });
-
-function humanizeDuration(duration: number) {
-  if (duration >= 1_000_000) {
-    return `${(duration / 1_000_000).toFixed(1)}ms`;
-  }
-  if (duration >= 1_000) {
-    return `${(duration / 1_000).toFixed(1)}µs`;
-  }
-  return `${duration}ns`;
-}
