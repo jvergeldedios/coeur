@@ -24,7 +24,7 @@ export const loggerMiddleware = createMiddleware(async (c, next) => {
   const duration = Number(process.hrtime.bigint() - start);
   logger
     .withContext({
-      duration: Number(duration),
+      duration,
     })
     .info(`Request completed in ${humanizeDuration(duration)}`);
 });
