@@ -19,7 +19,8 @@
     "db:reset": "bun run src/cli.ts db reset && bun run db:push",
     "db:push": "bunx drizzle-kit push",
     "db:migrate": "bunx drizzle-kit migrate",
-    "db:generate": "bunx drizzle-kit generate"
+    "db:generate": "bunx drizzle-kit generate",
+    "routes": "bun run src/cli.ts routes"
   },
   "dependencies": {
     "@loglayer/transport-pino": "^2.2.1",
