@@ -4,9 +4,9 @@ import {
 } from "@loglayer/transport-simple-pretty-terminal";
 import { PinoTransport } from "@loglayer/transport-pino";
 import { pino } from "pino";
-import { LogLayer, type ILogLayer } from "loglayer";
+import { LogLayer } from "loglayer";
 import { config } from "../config";
-import { asyncLocalStorage } from "./async-local-storage";
+import { serializeError } from "serialize-error";
 
 export function createLogger() {
   const pinoLogger = pino({
@@ -32,18 +32,7 @@ export function createLogger() {
     .filter((t) => t.enabled)
     .map((t) => t.transport);
   return new LogLayer({
+    errorSerializer: serializeError,
     transport,
   });
-}
-
-const defaultLogger = createLogger();
-
-export function getLogger(): ILogLayer {
-  const store = asyncLocalStorage.getStore();
-
-  if (!store) {
-    return defaultLogger;
-  }
-
-  return store.logger;
 }

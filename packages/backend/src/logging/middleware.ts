@@ -1,44 +1,40 @@
-import { Elysia } from "elysia";
-import { ip } from "elysia-ip";
-
+import { createMiddleware } from "hono/factory";
+import { asyncLocalStorage } from "./async-local-storage";
 import { getLogger } from ".";
 
-export const loggerMiddleware = () => {
-  return new Elysia({
-    name: "@coeur/logger",
-  })
-    .use(ip())
-    .derive({ as: "global" }, ({ request, ip }) => {
-      const loggerWithContext = getLogger().withContext({
-        reqId: crypto.randomUUID(),
-        method: request.method,
-        path: request.url,
-        body: request.body,
-        clientIp: ip,
-        userAgent: request.headers.get("user-agent"),
-      });
-      return {
-        logger: loggerWithContext,
-        startTime: process.hrtime.bigint(),
-      };
-    })
-    .onBeforeHandle({ as: "global" }, ({ logger }) => {
-      logger.info("Request received");
-    })
-    .onAfterHandle({ as: "global" }, ({ logger, startTime }) => {
-      const duration = process.hrtime.bigint() - startTime;
-      logger
-        .withContext({
-          duration: Number(duration),
-        })
-        .info(`Request completed in ${humanizeDuration(duration)}`);
+export const loggerMiddleware = createMiddleware(async (c, next) => {
+  const logger = getLogger()
+    .child()
+    .withContext({
+      reqId: crypto.randomUUID(),
+      method: c.req.method,
+      path: c.req.path,
+      params: c.req.param(),
+      query: c.req.query(),
+      clientIp: c.req.header("x-forwarded-for") || c.req.header("x-real-ip"),
     });
-};
 
-function humanizeDuration(duration: bigint) {
-  const ms = Number(duration) / 1000000;
-  if (ms >= 0.1) {
-    return `${ms.toFixed(1)}ms`;
+  c.set("logger", logger);
+
+  logger.info("Request received");
+  const start = process.hrtime.bigint();
+
+  await asyncLocalStorage.run({ logger }, next);
+
+  const duration = Number(process.hrtime.bigint() - start);
+  logger
+    .withContext({
+      duration: Number(duration),
+    })
+    .info(`Request completed in ${humanizeDuration(duration)}`);
+});
+
+function humanizeDuration(duration: number) {
+  if (duration >= 1_000_000) {
+    return `${(duration / 1_000_000).toFixed(1)}ms`;
   }
-  return `${(ms * 1000).toFixed(1)}μs`;
+  if (duration >= 1_000) {
+    return `${(duration / 1_000).toFixed(1)}µs`;
+  }
+  return `${duration}ns`;
 }
