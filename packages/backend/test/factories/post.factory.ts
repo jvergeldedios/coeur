@@ -1,8 +1,9 @@
 import { Factory } from "fishery";
-import { posts } from "../../src/db/schema";
-import { db } from "../../src/db";
 import { faker } from "@faker-js/faker";
-import type { NewPost, Post } from "../../src/types";
+
+import { posts } from "@/db/schema";
+import { db } from "@/db";
+import type { NewPost, Post } from "@/types";
 
 export const postFactory = Factory.define<NewPost, any, Post>(
   ({ onCreate, params }) => {

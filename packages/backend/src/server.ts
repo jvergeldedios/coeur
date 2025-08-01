@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import type { ILogLayer } from "loglayer";
-import { loggerMiddleware } from "./logging";
-import { api } from "./api";
+import { loggerMiddleware } from "@/logging";
+import { api } from "@/api";
 
 type Variables = {
   logger: ILogLayer;

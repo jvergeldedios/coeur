@@ -5,7 +5,7 @@ import {
 import { PinoTransport } from "@loglayer/transport-pino";
 import { pino } from "pino";
 import { LogLayer, ConsoleTransport } from "loglayer";
-import { config } from "../config";
+import { config } from "@/config";
 import { serializeError } from "serialize-error";
 
 const getLogLevel = () => {

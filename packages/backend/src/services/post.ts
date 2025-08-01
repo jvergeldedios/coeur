@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
-import { getLogger } from "../logging";
-import { db } from "../db";
-import { posts } from "../db/schema";
-import { type NewPost, type User, type Post } from "../types";
+import { getLogger } from "@/logging";
+import { db } from "@/db";
+import { posts } from "@/db/schema";
+import { type NewPost, type User, type Post } from "@/types";
 
 interface CreatePostProps {
   author: User;

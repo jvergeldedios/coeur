@@ -1,7 +1,7 @@
 import { createMiddleware } from "hono/factory";
-import { asyncLocalStorage } from "./async-local-storage";
-import { getLogger } from ".";
-import { humanizeDuration } from "../util/time";
+import { asyncLocalStorage } from "@/logging/async-local-storage";
+import { getLogger } from "@/logging";
+import { humanizeDuration } from "@/util/time";
 
 export const loggerMiddleware = createMiddleware(async (c, next) => {
   const logger = getLogger()

@@ -1,8 +1,8 @@
 import { version } from "./package.json";
-import { getLogger } from "./src/logging";
-import { config } from "./src/config";
-import { app } from "./src/server";
-import { db } from "./src/db";
+import { getLogger } from "@/logging";
+import { config } from "@/config";
+import { app } from "@/server";
+import { db } from "@/db";
 import { sql } from "drizzle-orm";
 
 const logger = getLogger();

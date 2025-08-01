@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { PostService } from "../services/post";
+import { PostService } from "@/services/post";
 
 const posts = new Hono();
 posts

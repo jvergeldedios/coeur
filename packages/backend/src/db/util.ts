@@ -1,9 +1,9 @@
 import { SQL } from "bun";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
-import { config } from "../config";
-import { getLogger } from "../logging";
-import { db } from ".";
-import * as schema from "./schema";
+import { config } from "@/config";
+import { getLogger } from "@/logging";
+import { db } from "@/db";
+import * as schema from "@/db/schema";
 import { type ExtractTablesWithRelations } from "drizzle-orm";
 
 type Schema = typeof schema;

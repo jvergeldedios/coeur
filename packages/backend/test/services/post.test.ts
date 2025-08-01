@@ -1,11 +1,10 @@
 import { describe, it, expect, beforeEach } from "bun:test";
 import { faker } from "@faker-js/faker";
 
-import type { User } from "../../src/types";
-
-import { PostService } from "../../src/services/post";
-import { userFactory } from "../factories/user.factory";
-import { postFactory } from "../factories/post.factory";
+import type { User } from "@/types";
+import { PostService } from "@/services/post";
+import { userFactory } from "@/test/factories/user.factory";
+import { postFactory } from "@/test/factories/post.factory";
 
 describe("PostService", () => {
   let author: User;

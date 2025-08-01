@@ -1,5 +1,5 @@
-import { asyncLocalStorage } from "./async-local-storage";
-import { createLogger } from "./logger";
+import { asyncLocalStorage } from "@/logging/async-local-storage";
+import { createLogger } from "@/logging/logger";
 
 const logger = createLogger();
 

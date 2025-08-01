@@ -1,8 +1,9 @@
 import { Factory } from "fishery";
-import { users } from "../../src/db/schema";
-import { db } from "../../src/db";
 import { faker } from "@faker-js/faker";
-import type { NewUser, User } from "../../src/types";
+
+import { users } from "@/db/schema";
+import { db } from "@/db";
+import type { NewUser, User } from "@/types";
 
 export const userFactory = Factory.define<NewUser, any, User>(
   ({ onCreate }) => {

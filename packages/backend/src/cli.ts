@@ -1,6 +1,6 @@
 import { Command } from "commander";
-import { createDatabase, dropDatabase } from "./db/util";
-import { defaultQueue } from "./queues/default";
+import { createDatabase, dropDatabase } from "@/db/util";
+import { defaultQueue } from "@/queues/default";
 
 const program = new Command();
 

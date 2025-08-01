@@ -1,9 +1,9 @@
 import { Worker } from "bullmq";
 
-import { redis } from "./queues/connection";
-import { getLogger } from "./logging";
-import { asyncLocalStorage } from "./logging/async-local-storage";
-import { humanizeDuration } from "./util/time";
+import { redis } from "@/queues/connection";
+import { getLogger } from "@/logging";
+import { asyncLocalStorage } from "@/logging/async-local-storage";
+import { humanizeDuration } from "@/util/time";
 
 const worker = new Worker(
   "default",
