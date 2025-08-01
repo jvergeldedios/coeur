@@ -20,7 +20,7 @@
     "cli": "bun run src/cli.ts",
     "db:drop": "bun run cli db drop",
     "db:create": "bun run cli db create",
-    "db:reset": "bun run cli db reset && bun run db:migrate",
+    "db:reset": "bun run cli db reset",
     "db:push": "bunx drizzle-kit push",
     "db:migrate": "bunx drizzle-kit migrate",
     "db:generate": "bunx drizzle-kit generate",

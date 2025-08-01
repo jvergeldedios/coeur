@@ -9,10 +9,7 @@ import { config } from "@/config";
 import { serializeError } from "serialize-error";
 
 const getLogLevel = () => {
-  if (config.NODE_ENV === "test") {
-    return "silent";
-  }
-  return config.NODE_ENV === "development" ? "debug" : "info";
+  return config.LOG_LEVEL;
 };
 
 export function createLogger() {

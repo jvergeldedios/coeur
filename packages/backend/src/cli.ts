@@ -1,6 +1,10 @@
 import { Command } from "commander";
-import { createDatabase, dropDatabase } from "@/db/util";
+import { createDatabase, dropDatabase, resetDatabase } from "@/db/util";
 import { defaultQueue } from "@/queues/default";
+import { getLogger } from "@/logging";
+import { setValue } from "@/config";
+
+setValue("LOG_DATABASE_QUERIES", false);
 
 const program = new Command();
 
@@ -12,8 +16,8 @@ dbCommands.command("create").action(async () => {
   await createDatabase();
 });
 dbCommands.command("reset").action(async () => {
-  await dropDatabase();
-  await createDatabase();
+  await resetDatabase();
+  getLogger().info("Database reset");
 });
 
 program.command("routes").action(async () => {

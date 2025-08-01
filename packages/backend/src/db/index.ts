@@ -8,7 +8,7 @@ import * as schema from "@/db/schema";
 
 class QueryLogger implements Logger {
   logQuery(query: string, params: unknown[]) {
-    if (config.NODE_ENV !== "test") {
+    if (config.LOG_DATABASE_QUERIES) {
       getLogger()
         .child()
         .withContext({
