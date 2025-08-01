@@ -8,13 +8,9 @@ import { LogLayer, ConsoleTransport } from "loglayer";
 import { config } from "@/config";
 import { serializeError } from "serialize-error";
 
-const getLogLevel = () => {
-  return config.LOG_LEVEL;
-};
-
 export function createLogger() {
   const pinoLogger = pino({
-    level: getLogLevel(),
+    level: config.LOG_LEVEL,
   });
 
   const transport = [
@@ -27,10 +23,6 @@ export function createLogger() {
       runtime: "node",
       theme: moonlight,
       enabled: config.NODE_ENV === "development",
-    }),
-    new ConsoleTransport({
-      logger: console,
-      enabled: config.NODE_ENV === "test" && getLogLevel() !== "silent",
     }),
   ];
 
