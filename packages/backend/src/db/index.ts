@@ -7,13 +7,15 @@ import { getLogger } from "../logging";
 
 class QueryLogger implements Logger {
   logQuery(query: string, params: unknown[]) {
-    getLogger()
-      .child()
-      .withContext({
-        query,
-        params,
-      })
-      .info("Executing query");
+    if (config.NODE_ENV !== "test") {
+      getLogger()
+        .child()
+        .withContext({
+          query,
+          params,
+        })
+        .info("Executing query");
+    }
   }
 }
 

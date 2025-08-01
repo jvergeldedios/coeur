@@ -1,10 +1,16 @@
 import { z } from "zod";
 import dotenv from "dotenv";
 
-dotenv.config({ quiet: true });
+if (process.env.NODE_ENV === "test") {
+  dotenv.config({ path: ".env.test", quiet: true });
+} else {
+  dotenv.config({ quiet: true });
+}
 
 const envSchema = z.object({
-  NODE_ENV: z.enum(["development", "production"]).default("development"),
+  NODE_ENV: z
+    .enum(["test", "development", "production"])
+    .default("development"),
   PORT: z.coerce.number().default(3000),
   DATABASE_URL: z
     .url()

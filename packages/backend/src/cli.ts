@@ -1,5 +1,6 @@
 import { Command } from "commander";
 import { createDatabase, dropDatabase } from "./db/util";
+import { defaultQueue } from "./queues/default";
 
 const program = new Command();
 
@@ -28,8 +29,9 @@ jobEnqueueCommands
   .command("post")
   .argument("<postId>")
   .action(async (postId) => {
-    const { PostService } = await import("./services/post");
-    await PostService.enqueuePostJob(postId);
+    defaultQueue.add("post", {
+      postId,
+    });
   });
 
 program.command("why").action(() => {

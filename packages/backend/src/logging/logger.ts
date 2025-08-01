@@ -4,13 +4,20 @@ import {
 } from "@loglayer/transport-simple-pretty-terminal";
 import { PinoTransport } from "@loglayer/transport-pino";
 import { pino } from "pino";
-import { LogLayer } from "loglayer";
+import { LogLayer, ConsoleTransport } from "loglayer";
 import { config } from "../config";
 import { serializeError } from "serialize-error";
 
+const getLogLevel = () => {
+  if (config.NODE_ENV === "test") {
+    return "silent";
+  }
+  return config.NODE_ENV === "development" ? "debug" : "info";
+};
+
 export function createLogger() {
   const pinoLogger = pino({
-    level: config.NODE_ENV === "development" ? "debug" : "info",
+    level: getLogLevel(),
   });
 
   const transport = [
@@ -23,6 +30,10 @@ export function createLogger() {
       runtime: "node",
       theme: moonlight,
       enabled: config.NODE_ENV === "development",
+    }),
+    new ConsoleTransport({
+      logger: console,
+      enabled: config.NODE_ENV === "test" && getLogLevel() !== "silent",
     }),
   ];
 
