@@ -4,7 +4,7 @@ import { db } from "../db";
 import { posts } from "../db/schema";
 import { type NewPost, type User, type Post } from "../types";
 
-export interface CreatePostProps {
+interface CreatePostProps {
   author: User;
   post: NewPost;
 }
@@ -29,10 +29,9 @@ export class PostService {
   }
 
   public static async getPostsByAuthor(author: User): Promise<Post[]> {
-    const fetchedPosts = await db
-      .select()
-      .from(posts)
-      .where(eq(posts.authorId, author.id));
+    const fetchedPosts = await db.query.posts.findMany({
+      where: eq(posts.authorId, author.id),
+    });
     if (!fetchedPosts) {
       throw new Error("Failed to get posts");
     }

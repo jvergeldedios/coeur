@@ -51,7 +51,7 @@ export async function resetDatabase() {
 export async function truncateAllTables() {
   const sql = new SQL(config.DATABASE_URL);
   getLogger().info(`Truncating all tables in database ${database}`);
-  const tableNames = Object.keys(schema) as TableNames[];
+  const tableNames = Object.keys(schema.tables) as TableNames[];
   for (const tableName of tableNames) {
     await sql`TRUNCATE TABLE ${sql(tableName)} RESTART IDENTITY CASCADE`;
   }
