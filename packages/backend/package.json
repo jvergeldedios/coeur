@@ -16,13 +16,13 @@
     "dev": "bun run --watch index.ts",
     "worker": "bun run src/worker.ts",
     "cli": "bun run src/cli.ts",
-    "db:drop": "bun run src/cli.ts db drop",
-    "db:create": "bun run src/cli.ts db create",
-    "db:reset": "bun run src/cli.ts db reset && bun run db:push",
+    "db:drop": "bun run cli db drop",
+    "db:create": "bun run cli db create",
+    "db:reset": "bun run cli db reset && bun run db:migrate",
     "db:push": "bunx drizzle-kit push",
     "db:migrate": "bunx drizzle-kit migrate",
     "db:generate": "bunx drizzle-kit generate",
-    "routes": "bun run src/cli.ts routes"
+    "routes": "bun run cli routes"
   },
   "dependencies": {
     "@loglayer/transport-pino": "^2.2.1",

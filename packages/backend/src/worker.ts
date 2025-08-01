@@ -53,3 +53,19 @@ worker.on("completed", (job) => {
     })
     .info(`Finished job with ID "${job.id}"`);
 });
+
+worker.on("failed", (job, error) => {
+  getLogger()
+    .child()
+    .withContext({
+      jobId: job?.id,
+      jobName: job?.name,
+      jobData: job?.data,
+      error: error.message,
+    })
+    .error(`Job failed with ID "${job?.id}" with error: "${error.message}"`);
+});
+
+worker.on("error", (error) => {
+  getLogger().child().error(error.message);
+});

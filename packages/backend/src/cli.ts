@@ -17,11 +17,9 @@ dbCommands.command("reset").action(async () => {
 
 program.command("routes").action(async () => {
   const { app } = await import("./server");
-  const { redis } = await import("./queues/connection");
   app.routes.forEach((route) => {
     console.log(route.method, route.path);
   });
-  redis.quit();
 });
 
 const jobCommands = program.command("jobs");
@@ -31,13 +29,12 @@ jobEnqueueCommands
   .argument("<postId>")
   .action(async (postId) => {
     const { PostService } = await import("./services/post");
-    const { redis } = await import("./queues/connection");
     await PostService.enqueuePostJob(postId);
-    redis.quit();
   });
 
 program.command("why").action(() => {
   console.log("what");
 });
 
-program.parse(process.argv);
+await program.parseAsync(process.argv);
+process.exit(0);
