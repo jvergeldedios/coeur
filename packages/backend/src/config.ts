@@ -9,6 +9,7 @@ const envSchema = z.object({
   DATABASE_URL: z
     .url()
     .default("postgresql://postgres:postgres@localhost:5432/coeur"),
+  REDIS_URL: z.url().default("redis://:redis@localhost:6379"),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
